@@ -20,7 +20,7 @@ module Api
         rescue Exception => e
           return render json: {status: false},status: 422
         end
-      end
+    end
 
     end
   end

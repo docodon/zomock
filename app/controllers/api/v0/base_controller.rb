@@ -7,7 +7,7 @@ module Api
 
     	def set_current_user
  			begin
- 				user = TokenDecrypter.decode_params(params["event_token"])			
+ 				user = TokenDecrypter.decode_params(request.headers["event-token"])			
  				@current_user = User.find_by_flock_id(user["userId"])
  			rescue Exception => e
  			   	render json: {status: false}, status: 422
