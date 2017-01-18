@@ -25,3 +25,7 @@ module Api
     end
   end
 end
+
+{"entity_type":"city","entity_id":1,"title":"Delhi NCR","latitude":28.625789,
+"longitude":77.210276,"city_id":1,"city_name":"Delhi NCR","country_id":1,
+"country_name":"India"}

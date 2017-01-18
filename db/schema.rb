@@ -11,24 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170118034942) do
+ActiveRecord::Schema.define(version: 20170118053821) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "locations", force: :cascade do |t|
-    t.integer  "user_id",                               null: false
-    t.string   "entity_type",                           null: false
-    t.integer  "entity_id",                             null: false
-    t.text     "title",                                 null: false
-    t.decimal  "latitude",     precision: 10, scale: 6, null: false
-    t.decimal  "longitude",    precision: 10, scale: 6, null: false
-    t.integer  "city_id",                               null: false
-    t.text     "city_name",                             null: false
-    t.integer  "country_id",                            null: false
-    t.text     "country_name",                          null: false
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.integer  "user_id",                                                     null: false
+    t.string   "entity_type",                           default: "city",      null: false
+    t.integer  "entity_id",                             default: 1,           null: false
+    t.text     "title",                                 default: "Delhi NCR", null: false
+    t.decimal  "latitude",     precision: 10, scale: 6, default: 28.625789,   null: false
+    t.decimal  "longitude",    precision: 10, scale: 6, default: 210276.0,    null: false
+    t.integer  "city_id",                               default: 1,           null: false
+    t.text     "city_name",                             default: "Delhi NCR", null: false
+    t.integer  "country_id",                            default: 1,           null: false
+    t.text     "country_name",                          default: "India",     null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
   end
 
   add_index "locations", ["user_id"], name: "index_locations_on_user_id", using: :btree
