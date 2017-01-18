@@ -15,8 +15,8 @@ module Api
 
     def launch
         begin
-          raise "" if @current_user.nil?
-          return render json: {status: true},status: 200 
+          @location = @current_user.location
+          render status: 200
         rescue Exception => e
           return render json: {status: false},status: 422
         end
@@ -25,7 +25,3 @@ module Api
     end
   end
 end
-
-{"entity_type":"city","entity_id":1,"title":"Delhi NCR","latitude":28.625789,
-"longitude":77.210276,"city_id":1,"city_name":"Delhi NCR","country_id":1,
-"country_name":"India"}
