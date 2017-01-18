@@ -11,10 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170115142242) do
+ActiveRecord::Schema.define(version: 20170118034942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "locations", force: :cascade do |t|
+    t.integer  "user_id",                               null: false
+    t.string   "entity_type",                           null: false
+    t.integer  "entity_id",                             null: false
+    t.text     "title",                                 null: false
+    t.decimal  "latitude",     precision: 10, scale: 6, null: false
+    t.decimal  "longitude",    precision: 10, scale: 6, null: false
+    t.integer  "city_id",                               null: false
+    t.text     "city_name",                             null: false
+    t.integer  "country_id",                            null: false
+    t.text     "country_name",                          null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  add_index "locations", ["user_id"], name: "index_locations_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.text     "flock_id",   null: false
@@ -25,4 +42,5 @@ ActiveRecord::Schema.define(version: 20170115142242) do
 
   add_index "users", ["flock_id"], name: "index_users_on_flock_id", unique: true, using: :btree
 
+  add_foreign_key "locations", "users"
 end
