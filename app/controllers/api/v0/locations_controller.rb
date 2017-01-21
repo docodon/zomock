@@ -1,6 +1,8 @@
 module Api
   module V0
     class LocationsController < BaseController
+    
+    require 'open-uri'
 
     def update
         begin
@@ -13,6 +15,11 @@ module Api
         end
     end
 
+
+    def menu_images  #wip
+      doc = Nokogiri::HTML(params[:url])
+      doc.xpath('//*[@id="tabtop"]/div/script')
+    end
 
     private
 

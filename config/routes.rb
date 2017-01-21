@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   		post '/' => 'sessions#install'
   		post '/launch' => 'sessions#launch'
   		put '/update_location' => 'locations#update'
-  	    #resources :locations, only: [:update]
+      post '/menu_images' => 'locations#menu_images'
 	
   	end
   end
