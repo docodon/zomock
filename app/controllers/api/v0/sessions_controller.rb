@@ -8,11 +8,14 @@ module Api
         begin
           u = User.where(flock_id: params[:userId]).first
           if u.nil?
-            User.create(flock_id: params[:userId],token: params[:token])
+            u = User.create(flock_id: params[:userId],token: params[:token])
           else
             u.token = params[:token]
             u.save!
           end
+          
+          u.destroy if params[:name] == "app.uninstall"
+
           return render json: {status: true}, status: 200
         rescue Exception => e
           return render json: {status: false}, status: 422
