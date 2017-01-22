@@ -7,7 +7,7 @@ module Api
     def update
         begin
           loc = Location.where(user_id: @current_user.id).first
-          @location = Location.update(@current_user.id,loc_params) unless loc.nil?
+          @location = Location.where(user_id: @current_user.id).update(loc_params) unless loc.nil?
           @location = Location.create(loc_params.merge({user_id: @current_user.id})) if loc.nil?
           render status: 200 
         rescue Exception => e
