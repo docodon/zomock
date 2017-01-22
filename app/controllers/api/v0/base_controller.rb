@@ -9,6 +9,9 @@ module Api
  			begin
  				p 'HEADERS from mobile !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
  				p request.headers
+ 				p 'event-token EVENT-TOKEN--------------------------------------------------------'
+ 				p request.headers["event-token"]
+ 				raise "NO EVENT TOKEN " if request.headers["event-token"].nil?
  				user = TokenDecrypter.decode_params(request.headers["event-token"])			
  				@current_user = User.find_by_flock_id(user["userId"])
  				p @current_user
