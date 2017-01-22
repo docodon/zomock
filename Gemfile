@@ -12,6 +12,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'jwt'
 gem 'rack-cors'
 gem 'nokogiri'
+gem 'rails_12factor'
 
 group :development, :test do
   gem 'byebug'
