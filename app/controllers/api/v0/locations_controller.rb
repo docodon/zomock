@@ -25,7 +25,7 @@ module Api
 
     def loc_params
       params.require(:location_details).permit(:entity_type, :entity_id, :title, :latitude, 
-        :longitude, :city_id, :city_name, :country_id, :country_name, :result)
+        :longitude, :city_id, :city_name, :country_id, :country_name)
     end
 
     end
