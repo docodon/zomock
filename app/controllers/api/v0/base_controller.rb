@@ -22,9 +22,7 @@ module Api
 
     	def parse_auth_header
     		begin
-    			p "here"
     			refering_url = request.headers["referer"]
-    			p "nooooooooooooooooooooooooooooooooooooooooooo" if refering_url.nil?
     			url_params   = refering_url.split('?')[1]
     			CGI::parse(url_params)["flockEventToken"][0] 
     		rescue
