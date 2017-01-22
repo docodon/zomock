@@ -1,25 +1,35 @@
 module Api
   module V0
     class BaseController < ActionController::Base
-    	
+    	require 'cgi'
+
+
     	before_action :set_current_user   	
       	attr_reader :current_user
 
     	def set_current_user
  			begin
- 				p 'HEADERS from mobile !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
- 				p request.headers
- 				p 'event-token EVENT-TOKEN--------------------------------------------------------'
- 				p request.headers["event-token"]
- 				raise "NO EVENT TOKEN " if request.headers["event-token"].nil?
- 				user = TokenDecrypter.decode_params(request.headers["event-token"])			
+ 				auth_header = request.headers["event-token"]
+ 				auth_header = parse_auth_header  if auth_header.nil?
+ 				user = TokenDecrypter.decode_params(auth_header)			
  				@current_user = User.find_by_flock_id(user["userId"])
- 				p @current_user
  			rescue Exception => e
- 				p 'ERROR MESSAGE FOR MOBILE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11111'
- 				p e.message
  			   	render json: {status: false}, status: 422
  			end	
+    	end
+
+    	private
+
+    	def parse_auth_header
+    		begin
+    			p "here"
+    			refering_url = request.headers["referer"]
+    			p "nooooooooooooooooooooooooooooooooooooooooooo" if refering_url.nil?
+    			url_params   = refering_url.split('?')[1]
+    			CGI::parse(url_params)["flockEventToken"][0] 
+    		rescue
+    			return nil
+    		end
     	end
 
     end
