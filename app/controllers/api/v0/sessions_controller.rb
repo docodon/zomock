@@ -7,13 +7,16 @@ module Api
       def install 
         begin
           u = User.where(flock_id: params[:userId]).first
-          if u.nil?
-            u = User.create(flock_id: params[:userId],token: params[:token])
-          else
-            u.token = params[:token]
-            u.save!
-          end
           
+          if params[:name] == "app.install"
+            if u.nil? 
+              u = User.create(flock_id: params[:userId],token: params[:token])
+            else
+              u.token = params[:token]
+              u.save!
+            end
+          end
+
           u.destroy if params[:name] == "app.uninstall"
 
           return render json: {status: true}, status: 200
