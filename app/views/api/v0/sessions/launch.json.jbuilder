@@ -10,3 +10,4 @@ json.location_details do
 	json.country_id			@location.country_id
 	json.country_name		@location.country_name
 end
+json.flock_token @current_user.token
