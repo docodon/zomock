@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   	
   		post '/' => 'sessions#install'
   		post '/launch' => 'sessions#launch'
-  		put '/update_location' => 'locations#update'
+  		put  '/update_location' => 'locations#update'
       post '/menu_images' => 'locations#menu_images'
-	
+      post '/share' => 'sharing#share_restaurants'	
   	end
   end
 end
