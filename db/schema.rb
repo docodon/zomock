@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170118055940) do
+ActiveRecord::Schema.define(version: 20170215071531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,34 @@ ActiveRecord::Schema.define(version: 20170118055940) do
 
   add_index "locations", ["user_id"], name: "index_locations_on_user_id", using: :btree
 
+  create_table "polls", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "polls", ["user_id"], name: "index_polls_on_user_id", using: :btree
+
+  create_table "restaurant_users", force: :cascade do |t|
+    t.integer  "user_id",       null: false
+    t.integer  "restaurant_id", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "restaurant_users", ["restaurant_id"], name: "index_restaurant_users_on_restaurant_id", using: :btree
+  add_index "restaurant_users", ["user_id"], name: "index_restaurant_users_on_user_id", using: :btree
+
+  create_table "restaurants", force: :cascade do |t|
+    t.integer  "poll_id"
+    t.text     "thumb",      null: false
+    t.text     "url",        null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "restaurants", ["poll_id"], name: "index_restaurants_on_poll_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.text     "flock_id",   null: false
     t.text     "token",      null: false
@@ -43,4 +71,8 @@ ActiveRecord::Schema.define(version: 20170118055940) do
   add_index "users", ["flock_id"], name: "index_users_on_flock_id", unique: true, using: :btree
 
   add_foreign_key "locations", "users"
+  add_foreign_key "polls", "users"
+  add_foreign_key "restaurant_users", "restaurants"
+  add_foreign_key "restaurant_users", "users"
+  add_foreign_key "restaurants", "polls"
 end
