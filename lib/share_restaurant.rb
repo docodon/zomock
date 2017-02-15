@@ -10,11 +10,11 @@ class ShareRestaurant
 
   		contacts.each do |contact|
 			request = Net::HTTP::Post.new(uri.request_uri, header)
-			request.body = {  to: 	 contact[:id]+'aa',
-							  text:  'how about this !',
-							  token: current_user.token,
-						   	  attachments: self.generate_html(restaurants)
-						   }.to_json  		
+			request.body = {  to: 	       contact[:id],
+							          text:        'how about this !',
+							          token:       current_user.token,
+						   	        attachments: self.generate_html(restaurants)
+						         }.to_json  		
   			response = http.request(request)
   			raise "Not able to send message !" unless eval(response.body)[:error].blank?
   		end
