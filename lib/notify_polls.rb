@@ -26,7 +26,7 @@ class NotifyPolls
         title: 'Zomock poll',
         description: 'via Zomock',
         views: {
-                widget: { src: ENV["POLL_URL"].to_s+'/'+poll_id.to_s, width: 400, height: 400 }
+                widget: { src: ENV["POLL_URL"].to_s+'/api/v0/polls/'+poll_id.to_s, width: 380, height: 200 }
         }
   		}].to_json
   	end

@@ -9,6 +9,9 @@ Rails.application.routes.draw do
       post '/share' => 'sharing#share_restaurants'	
 
       resources :polls, only: [:create , :show, :update] do
+        member do
+          post '/restaurant/:id2' => 'polls#vote_restaurant'
+        end
       end
 
 

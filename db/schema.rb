@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170215071531) do
+ActiveRecord::Schema.define(version: 20170216153223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,15 +41,16 @@ ActiveRecord::Schema.define(version: 20170215071531) do
 
   add_index "polls", ["user_id"], name: "index_polls_on_user_id", using: :btree
 
-  create_table "restaurant_users", force: :cascade do |t|
-    t.integer  "user_id",       null: false
+  create_table "restaurant_polls", force: :cascade do |t|
     t.integer  "restaurant_id", null: false
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.text     "flock_user",    null: false
+    t.integer  "poll_id",       null: false
   end
 
-  add_index "restaurant_users", ["restaurant_id"], name: "index_restaurant_users_on_restaurant_id", using: :btree
-  add_index "restaurant_users", ["user_id"], name: "index_restaurant_users_on_user_id", using: :btree
+  add_index "restaurant_polls", ["poll_id"], name: "index_restaurant_polls_on_poll_id", using: :btree
+  add_index "restaurant_polls", ["restaurant_id"], name: "index_restaurant_polls_on_restaurant_id", using: :btree
 
   create_table "restaurants", force: :cascade do |t|
     t.integer  "poll_id"
@@ -57,6 +58,8 @@ ActiveRecord::Schema.define(version: 20170215071531) do
     t.text     "url",        null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "name",       null: false
+    t.string   "location",   null: false
   end
 
   add_index "restaurants", ["poll_id"], name: "index_restaurants_on_poll_id", using: :btree
@@ -72,7 +75,6 @@ ActiveRecord::Schema.define(version: 20170215071531) do
 
   add_foreign_key "locations", "users"
   add_foreign_key "polls", "users"
-  add_foreign_key "restaurant_users", "restaurants"
-  add_foreign_key "restaurant_users", "users"
+  add_foreign_key "restaurant_polls", "restaurants"
   add_foreign_key "restaurants", "polls"
 end

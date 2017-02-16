@@ -8,7 +8,6 @@ class User < ActiveRecord::Base
   	after_create :add_location
 
   	has_many :polls, dependent: :destroy
-  	has_many :restaurant_users, dependent: :destroy
 
   	private
 
