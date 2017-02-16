@@ -47,13 +47,13 @@
 							value='"+ results[i][4]+"'>";
 			option +=    "<a href='"+results[i][5]+"' target='_blank'>";
 			option +=    "<div class='progress' style='width:300px;float:left;height:30px'>";
-			if(user_vote===results[i][4])
+			if(user_vote==results[i][4])
 			{
-				option+="<div id='rest" + results[i][4] +"' class='bar progress-bar progress-bar-info' role='progressbar' style='width:"+  ( (total_votes==0)? 0 :results[i][1]/total_votes ) +"%;color:#000;height:30px'>";
+				option+="<div id='rest" + results[i][4] +"' class='bar progress-bar progress-bar-info' role='progressbar' style='width:"+  ( (total_votes==0)? 0 :(results[i][1]*100)/total_votes ) +"%;color:#000;height:30px'>";
 			}
 			else
 			{
-				option+="<div id='rest" + results[i][4] +"' class='bar progress-bar progress-bar-success bar' role='progressbar' style='width:"+  ( (total_votes==0)? 0 :results[i][1]/total_votes ) +"%;color:#000;height:30px'>";
+				option+="<div id='rest" + results[i][4] +"' class='bar progress-bar progress-bar-success bar' role='progressbar' style='width:"+  ( (total_votes==0)? 0 :(results[i][1]*100)/total_votes ) +"%;color:#000;height:30px'>";
 			}
 
 			option+="<span class='detail'> &nbsp;"+results[i][0] + " (" + results[i][1]+" votes)</span>";		

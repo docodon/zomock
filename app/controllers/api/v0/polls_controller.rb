@@ -23,7 +23,7 @@ module Api
       begin
         @poll = Poll.find(params[:id])
         @restaurants = @poll.restaurants
-        @users_voted = RestaurantUser.where(restaurant: @restaurants).all
+        @users_voted = RestaurantPoll.where(poll: @poll).all
         @vote_count = {}
         @current_user_voted = []
         @restaurants.each do |i|
@@ -31,7 +31,7 @@ module Api
         end
         @users_voted.each do |i|
           @vote_count[i.restaurant]+=1
-          @current_user_voted.push(i.restaurant) if i[:user_id]==@guest_user
+          @current_user_voted.push(i.restaurant_id) if i[:flock_user]==@guest_user
         end
         @vote_count_ar = @vote_count.map { |i| [i[0].name, i[1], 
                                                 i[0].thumb, i[0].location, 
@@ -44,7 +44,15 @@ module Api
     end
 
     def vote_restaurant
-      binding.pry
+      begin
+        poll = RestaurantPoll.where(poll_id: params[:id], flock_user: @guest_user).first
+        poll.destroy unless poll.blank?
+        RestaurantPoll.create!(poll_id: params[:id],
+                               restaurant_id: params[:id2], flock_user: @guest_user)
+        return render json: {status: true},status: 200
+      rescue Exception => e
+        return render json: {status: false},status: 422
+      end
     end
 
 
