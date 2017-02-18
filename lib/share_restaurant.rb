@@ -41,7 +41,7 @@ class ShareRestaurant
   		s='<html><body><div style="overflow-y: scroll;overflow-x:hidden;">'
   		restaurants.each_with_index do |i,j|
   			s+="<div style='height:auto;width:320;padding-bottom:10px;margin-right:10px;margin-left:10px;'>
-              <img src='#{ i[:thumb].blank? ? '/default_image.png' : i[:thumb] }' style='width:240px;height:180px;margin-left:10px;margin-right:0px;border-radius:15px'></img>
+              <img src='#{ i[:thumb].blank? ? ENV['POLL_URL']+'/place_holder.png' : i[:thumb] }' style='width:240px;height:180px;margin-left:10px;margin-right:0px;border-radius:15px'></img>
   	   				<p style='font-family:Monospace;'>
                 <p style='display:inline;color:#CB202D;'><b>#{i[:name]}</b></p>
                  at #{i[:location][:locality_verbose]}<br> Rated #{i[:user_rating][:aggregate_rating]} with
