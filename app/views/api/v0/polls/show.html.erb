@@ -18,6 +18,9 @@
 		font-size: 15px;
 		line-height: 30px;
 	}
+	.non-active{
+		pointer-events: none;
+	}
 
 </style>
 	
@@ -25,8 +28,6 @@
 		
 		var loadPolls = function(){
 
-		$(".detail").css("pointer-events", "none");
-		
 		var poll_id = <%= @poll.id %> 
 		var results = JSON.parse('<%= @vote_count_ar %>'.replace(/&quot;/g,'"'));
 		var user_vote = '<%= @current_user_voted[0] %>' ; 
@@ -34,9 +35,6 @@
 		var user_flock_id = '<%= @guest_user %>';
 
 		var url = '<%= ENV["POLL_URL"] %>'+'/api/v0/polls/'+poll_id;
-		
-		// var form = "<form action='"+url+"' method='PUT'>";
-
 		var polls = "";
 
 		for(var i=0;i<results.length;i++)
@@ -44,19 +42,21 @@
 			
 			var option = "<div style='height:40px;'>"
 			option +=    "<input type='radio' name='user_vote' style='float:left;margin-right:10px;margin-left:10px;height:30px' \
-							value='"+ results[i][4]+"'>";
+							value='"+ results[i][4]+"'";
+
+			option+=   (user_vote == results[i][4]) ? 'checked >' : '>';				
 			option +=    "<a href='"+results[i][5]+"' target='_blank'>";
 			option +=    "<div class='progress' style='width:300px;float:left;height:30px'>";
 			if(user_vote==results[i][4])
 			{
-				option+="<div id='rest" + results[i][4] +"' class='bar progress-bar progress-bar-info' role='progressbar' style='width:"+  ( (total_votes==0)? 0 :(results[i][1]*100)/total_votes ) +"%;color:#000;height:30px'>";
+				option+="<div id='rest" + results[i][4] +"' class='bar progress-bar progress-bar-info bar' role='progressbar' style='width:"+  ( (total_votes==0)? 0 :(results[i][1]*100)/total_votes ) +"%;color:#000;height:30px'>";
 			}
 			else
 			{
 				option+="<div id='rest" + results[i][4] +"' class='bar progress-bar progress-bar-success bar' role='progressbar' style='width:"+  ( (total_votes==0)? 0 :(results[i][1]*100)/total_votes ) +"%;color:#000;height:30px'>";
 			}
 
-			option+="<span class='detail'> &nbsp;"+results[i][0] + " (" + results[i][1]+" votes)</span>";		
+			option+="<span class='detail' id='detail"+results[i][4]+"' style='float:left'> &nbsp;"+results[i][0] + " (" + results[i][1]+" votes)</span>";		
 			option+="</div>";
 			option+="</div>";
 			option+="</a>";
@@ -66,20 +66,65 @@
 
 		$('body').append(polls);
 
+		var update = function(){
+
+			console.log("here i am");
+
+			$.get(url+"?json=1&user_id="+user_flock_id,function(data){
+			
+				results = eval(data.results);
+				total_votes = data.total_votes;
+				user_voted  = data.current_user_vote;
+				console.log(user_vote+"   "+user_voted);
+				
+				console.log(results[0]);
+				console.log(results[1]);
+				console.log(results[2]);
+
+				for(var i=0;i<results.length;i++)
+				{
+					var width = ( (total_votes==0)? 0 :(results[i][1]*100)/total_votes ) ;
+					//change divs width
+					$("#rest"+results[i][4]).width(width+'%');
+					//change text of span
+					var text = results[i][0] + " (" + results[i][1]+" votes)";
+					$("#detail"+results[i][4]).text(text);
+				}
+				
+				if(user_voted !== user_vote)
+				{
+					$("#rest"+user_voted).removeClass('progress-bar-success');
+					$("#rest"+user_voted).addClass('progress-bar-info');
+					$("#rest"+user_vote).removeClass('progress-bar-info');
+					$("#rest"+user_vote).addClass('progress-bar-success');
+					user_vote = user_voted;
+				}
+
+				$('#message').text("game is on !");
+				$('body').removeClass('non-active');
+
+			});
+		};
+
 
 		$('input[type=radio][name=user_vote]').change(function(){
-			console.log(this.value);
+			$('#message').text("Recalculating PI...");
+			$('body').addClass('non-active');
+
 			$.post(url+"/restaurant/"+this.value,{user_id: user_flock_id},function(){
-					console.log('done');
-				}).fail(function(){
+				setTimeout(update, 5000);
+			}).fail(function(){
 					console.log('not done');
-				});		
+			});		
 		});
 	};
 
 </script>
 
 <body onload='loadPolls()' style='margin-top: 15px;overflow-x:hidden;overflow-y: scroll'>
+<div id="message" style="height: 30px;width: 360px;margin-left:10px">
+game is on !
+</div>
 </body>
 
 </html>

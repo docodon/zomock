@@ -10,7 +10,7 @@ class NotifyPolls
   		groups.each do |group|
 			  request = Net::HTTP::Post.new(uri.request_uri, header)
 			  request.body = {  to: 	       group[:id],
-				  			          text:        "polls @zomock",
+				  			          text:        "",
 				  			          token:       current_user.token,
                           attachments: widget(poll_id)
 				  		         }.to_json  		
@@ -23,8 +23,8 @@ class NotifyPolls
 
   	def self.widget poll_id
   		[{
-        title: 'Zomock poll',
-        description: 'via Zomock',
+        title: 'Zomock',
+        description: 'polls',
         views: {
                 widget: { src: ENV["POLL_URL"].to_s+'/api/v0/polls/'+poll_id.to_s, width: 380, height: 200 }
         }

@@ -38,6 +38,13 @@ module Api
                                                 i[0].id, i[0].url ]    
                                          }.to_json
         raise "something wrong !" if @current_user_voted.length>1
+        if params[:json].to_i==1
+          return render json: {poll_id: @poll.id,
+                               results: @vote_count_ar,
+                               current_user_vote: @current_user_voted[0],
+                               total_votes: @users_voted.length
+                              }
+        end
       rescue Exception => e
         return render json: {message: 'Page not found !'},status: 422
       end
