@@ -4,7 +4,7 @@ class ShareRestaurant
  
   	def self.share(contacts, restaurants, current_user)
   		uri =  URI.parse(ENV['FLOCK_URL']+'/chat.sendMessage')
-  		header = {'Content-Type': 'text/json'}
+  		header = {'Content-Type'=> 'text/json'}
 		  http = Net::HTTP.new(uri.host, uri.port)
 		  http.use_ssl = true
 
