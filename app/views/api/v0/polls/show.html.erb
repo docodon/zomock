@@ -68,7 +68,6 @@
 
 		var update = function(){
 
-			console.log("here i am");
 
 			$.get(url+"?json=1&user_id="+user_flock_id,function(data){
 			
@@ -91,14 +90,13 @@
 					$("#detail"+results[i][4]).text(text);
 				}
 				
-				if(user_voted !== user_vote)
-				{
-					$("#rest"+user_voted).removeClass('progress-bar-success');
-					$("#rest"+user_voted).addClass('progress-bar-info');
-					$("#rest"+user_vote).removeClass('progress-bar-info');
-					$("#rest"+user_vote).addClass('progress-bar-success');
-					user_vote = user_voted;
-				}
+				$("#rest"+user_vote).removeClass('progress-bar-info');
+				$("#rest"+user_vote).addClass('progress-bar-success');
+		
+				$("#rest"+user_voted).removeClass('progress-bar-success');
+				$("#rest"+user_voted).addClass('progress-bar-info');
+		
+				user_vote = user_voted;
 
 				$('#message').text("game is on !");
 				$('body').removeClass('non-active');
@@ -117,6 +115,16 @@
 					console.log('not done');
 			});		
 		});
+
+	var update_polls = function(){
+			$('#message').text("Recalculating PI...");
+			$('body').addClass('non-active');
+			update();
+		};
+
+		setInterval(update_polls, 30000);
+
+
 	};
 
 </script>
