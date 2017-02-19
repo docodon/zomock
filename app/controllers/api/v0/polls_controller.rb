@@ -15,6 +15,7 @@ module Api
         NotifyPolls.polls(poll[:id], params[:groups], @current_user)
         return render json: {status: true},status: 200
       rescue Exception => e
+        p 'ERROR CREATING POLLS  '+e.message.to_s
         return render json: {status: false},status: 422
       end
     end
