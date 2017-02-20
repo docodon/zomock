@@ -25,8 +25,23 @@
 </style>
 	
 <script>
-		
+
+
+		function getUrlVars()
+		{
+		    var vars = {}, hash;
+		    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		    for(var i = 0; i < hashes.length; i++)
+		    {
+		        hash = hashes[i].split('=');
+		        vars[hash[0]]=hash[1];
+		    }
+		    return vars;
+		}
+	
 		var loadPolls = function(){
+
+		var auth_params = getUrlVars();
 
 		var poll_id = <%= @poll.id %> 
 		var results = JSON.parse('<%= @vote_count_ar %>'.replace(/&quot;/g,'"'));
@@ -69,8 +84,7 @@
 		var update = function(){
 
 
-			$.get(url+"?json=1&user_id="+user_flock_id,function(data){
-			
+			$.get(url+"?json=1&flockEventToken="+auth_params.flockEventToken,function(data){
 				results = eval(data.results);
 				total_votes = data.total_votes;
 				user_voted  = data.current_user_vote;
@@ -109,8 +123,8 @@
 			$('#message').text("Recalculating PI...");
 			$('body').addClass('non-active');
 
-			$.post(url+"/restaurant/"+this.value,{user_id: user_flock_id},function(){
-				setTimeout(update, 5000);
+			$.post(url+"/restaurant/"+this.value,{flockEventToken: auth_params.flockEventToken},function(){
+				setTimeout(update, 7000);
 			}).fail(function(){
 					console.log('not done');
 			});		
@@ -122,8 +136,7 @@
 			update();
 		};
 
-		setInterval(update_polls, 30000);
-
+	setInterval(update_polls, 60000);	
 
 	};
 

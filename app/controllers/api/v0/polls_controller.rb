@@ -79,9 +79,9 @@ module Api
 
     def set_guest_user
       begin
-        @guest_user = eval(params[:flockEvent])[:userId]
+        @guest_user = TokenDecrypter.decode_params(params[:flockEventToken])["userId"]
+        raise "nil user" if @guest_user.blank?
       rescue
-        @guest_user = params[:user_id]
         return render status: 422 if @guest_user.blank?
       end
     end  
